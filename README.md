@@ -1,5 +1,11 @@
 <h2>Tags</h2>
+<p>Opening Tag:</p>
 <p>|elem</p>
+<p>Closing Tag:</p>
+<p>|</p>
+<h2>Nesting</h2>
+<p>Opening tag is the same. For closing tag though, you need to use a different syntax.</p>
+<p>||div</p>
 <h2>Attributes</h2>
   <p>.class</p>
   <p>#id</p>
