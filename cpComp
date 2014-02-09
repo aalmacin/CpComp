@@ -44,6 +44,10 @@ cat $1 | while read line; do
     '|')
       echo '</'$elem'>' >> $outputFile
       ;;
+    '||'*)
+      elem=${ln/||/''}
+      echo '</'$elem'>' >> $outputFile
+      ;;
   esac
   counter=$[counter+1]
 done
