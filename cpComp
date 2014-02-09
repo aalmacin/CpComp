@@ -1,0 +1,50 @@
+#!/bin/sh
+outputFile=output.html
+rm $outputFile
+counter=0
+cat $1 | while read line; do
+  if [[ $line ==  //* ]]; then
+    continue
+  fi
+  IFS=' ' read -ra ln <<< $line
+  case $line in
+    '|= '*)
+      elem=${ln[1]}
+      openingTag="<$elem"
+      c=0
+      line=${line/'|='/''}
+      line=${line/$elem/''}
+      while [[ 1 ]]; do
+        cLine=${ln[$c]}
+        if [[ $cLine != '' ]]; then
+          case $cLine in
+            '.'*)
+              openingTag=$openingTag' class="'${cLine/'.'/''}'"'
+              line=${line/$cLine/''}
+              openingTag=${openingTag/'&'/' '}
+              ;;
+            '#'*)
+              openingTag=$openingTag' id="'${cLine/'#'/''}'"'
+              line=${line/$cLine/''}
+              ;;
+            '*'*)
+              openingTag=$openingTag${cLine/'*'/' '}
+              line=${line/$cLine/''}
+              ;;
+          esac
+        else
+          break;
+        fi
+        c=$[c+1]
+      done
+      openingTag=$openingTag'>'
+      openingTag=$openingTag$line
+      echo $openingTag >> $outputFile
+      ;;
+    '|')
+      echo '</'$elem'>' >> $outputFile
+      ;;
+  esac
+  counter=$[counter+1]
+done
+pbcopy < $1
